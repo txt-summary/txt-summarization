@@ -13,6 +13,7 @@ import tkinter.filedialog
 from spacy_summarization import text_summarizer
 from gensim.summarization import summarize
 from nltk_summarization import nltk_summarizer
+from sumy_summarization import sumy_summarizer
 
 # Web Scraping Pkg
 from bs4 import BeautifulSoup
@@ -62,36 +63,17 @@ label4.grid(column=0, row=0)
 
 tab_control.pack(expand=1, fill='both')
 
-# Word Count of Original Text and Summary
-original_word_count = 0
-summary_word_count = 0
-
-
-# def original_word_count(value):
-#     original_word_count = value
-#     return original_word_count
-
-
-# def summary_word_count(value):
-#     summary_word_count = value
-#     return summary_word_count
 
 # Functions
-
-
 def get_summary():
     raw_text = str(entry.get('1.0', tk.END))
     final_text = text_summarizer(raw_text)
     print(final_text)
     result = '\nSummary:{}'.format(final_text)
     tab1_display.insert(tk.END, result)
-    global summary_word_count
-    # summary_word_count = len(result)
-    # print(summary_word_count)
+
 
 # Clear entry widget
-
-
 def clear_text():
     entry.delete('1.0', END)
 
@@ -132,8 +114,6 @@ def clear_compare_display_result():
 
 # Functions for TAB 2 FILE PROCESSER
 # Open File to Read and Process
-
-
 def openfiles():
     file1 = tkinter.filedialog.askopenfilename(
         filetypes=(("Text Files", ".txt"), ("All files", "*")))
@@ -192,7 +172,9 @@ def use_gensim():
 
 def use_sumy():
     raw_text = str(entry1.get('1.0', tk.END))
-    final_text = text_summarizer(raw_text)
+    # 26/5
+    # final_text = text_summarizer(raw_text)
+    final_text = sumy_summarizer(raw_text)
     print(final_text)
     result = '\nSumy Summary:{}\n'.format(final_text)
     tab4_display.insert(tk.END, result)
@@ -394,6 +376,7 @@ entry1 = ScrolledText(tab4, wrap=WORD, height=18)
 entry1.grid(row=2, column=0, columnspan=3, padx=5, pady=3)
 
 entry1.bind("<KeyRelease>", comparer_tab_entry_update)
+
 # BUTTONS
 button1 = Button(tab4, text="Reset", command=clear_compare_text,
                  width=12, bg='#03A9F4', fg='#fff')
@@ -443,6 +426,7 @@ tab4_display = ScrolledText(tab4, wrap=WORD, height=18)
 tab4_display.grid(row=7, column=0, columnspan=3, padx=5, pady=5)
 
 tab4_display.bind("<KeyRelease>", comparer_tab_summary_update)
+
 # About TAB
 about_label = Label(
     tab5, text="Text Summarizer with Deep Learning \n A project by Karan, Vikrant & Anurag", pady=5, padx=5)
